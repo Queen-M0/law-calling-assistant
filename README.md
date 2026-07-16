@@ -1,16 +1,16 @@
 <p align="center">
-  <img src="./docs/assets/readme-hero.svg" width="100%" alt="Law Calling Assistant — AI-native outbound sales infrastructure" />
+  <img src="./docs/assets/readme-hero.svg" width="100%" alt="Law Calling Agent — Agentic Revenue Operations Platform" />
 </p>
 
-<h1 align="center">Law Calling Assistant</h1>
+<h1 align="center">Law Calling Agent</h1>
 
 <p align="center">
-  <strong>面向法律服务、商标与企业服务销售场景的私有化智能外呼与客户经营平台</strong>
+  <strong>面向法律服务、商标与企业服务销售场景的垂直业务智能体平台</strong>
 </p>
 
 <p align="center">
-  把每一次通话转化为结构化洞察，把每一个 AI 结论转化为可执行任务，<br/>
-  把分散的销售动作沉淀为可度量、可追踪、可持续经营的数据资产。
+  以通话为触发器，以客户记忆为上下文，以企业工具为执行能力，<br/>
+  将每一次客户沟通转化为可解释、可审批、可执行、可持续优化的经营动作。
 </p>
 
 <p align="center">
@@ -23,13 +23,15 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/Architecture-Event_Driven-6F42C1?style=flat-square" alt="Event Driven" />
+  <img src="https://img.shields.io/badge/Agent-Vertical_Business_Agent-7C3AED?style=flat-square" alt="Vertical Business Agent" />
   <img src="https://img.shields.io/badge/Deployment-Private-0B7285?style=flat-square" alt="Private Deployment" />
   <img src="https://img.shields.io/badge/Status-Active_Development-FF8C00?style=flat-square" alt="Active Development" />
-  <img src="https://img.shields.io/badge/AI-ASR_%2B_LLM-5A67D8?style=flat-square" alt="ASR and LLM" />
+  <img src="https://img.shields.io/badge/Governance-Human_in_the_Loop-5A67D8?style=flat-square" alt="Human in the Loop" />
 </p>
 
 <p align="center">
   <a href="#项目定位">项目定位</a> ·
+  <a href="#垂直业务-agent">垂直 Agent</a> ·
   <a href="#核心业务闭环">业务闭环</a> ·
   <a href="#系统架构">系统架构</a> ·
   <a href="#当前能力与完成度">能力矩阵</a> ·
@@ -39,9 +41,9 @@
 
 ---
 
-## ✨ 从录音归档，到智能经营
+## ✨ 从录音归档，到 Agentic Revenue Operations
 
-Law Calling Assistant 最初用于解决第三方外呼 SaaS **录音保存周期短、业务数据不私有、销售复盘依赖人工** 等问题。项目现已从“话单导入 + 录音自动下载 + AI 分析”逐步演进为由管理端、业务后端和 AI 微服务构成的销售运营平台。
+Law Calling Agent（仓库工程名 `law-calling-assistant`）最初用于解决第三方外呼 SaaS **录音保存周期短、业务数据不私有、销售复盘依赖人工** 等问题。项目现已从“话单导入 + 录音自动下载 + AI 分析”逐步演进为由管理端、业务后端和智能服务构成的 Agentic Revenue Operations Platform。
 
 <table>
   <tr>
@@ -63,14 +65,14 @@ Law Calling Assistant 最初用于解决第三方外呼 SaaS **录音保存周�
 项目的长期目标不是简单替代一个录音分析工具，而是构建：
 
 <p align="center">
-  <strong>自有通信外呼平台&nbsp;&nbsp;×&nbsp;&nbsp;AI 销售运营平台&nbsp;&nbsp;×&nbsp;&nbsp;ERP 经营集成平台</strong>
+  <strong>自有通信外呼平台&nbsp;&nbsp;×&nbsp;&nbsp;垂直业务 Agent&nbsp;&nbsp;×&nbsp;&nbsp;ERP 经营智能平台</strong>
 </p>
 
 <a id="项目定位"></a>
 
 ## 🎯 项目定位
 
-当前项目更准确的定位是 **AI 外呼运营前台**：它已经具备客户与通话数据管理、录音归档、ASR/LLM 分析、跟进任务和销售工作台等基础能力，但完整的自有通信底座、ERP 经营集成和企业级智能自动化仍在规划与建设中。
+当前项目已经具备 **AI 外呼运营前台** 的核心基础，并正在向 **法律服务销售垂直 Agent** 演进：现有客户、通话、录音、分析、任务和工作台构成 Agent 的业务上下文与执行底座；下一阶段将进一步补充客户长期记忆、工具调用、运行审计、人工审批和效果评估。
 
 平台面向三个核心角色：
 
@@ -91,8 +93,8 @@ Law Calling Assistant 最初用于解决第三方外呼 SaaS **录音保存周�
       <p>自动归档录音，通过 ASR + LLM 提取摘要、痛点、标签、意向和风险信号。</p>
     </td>
     <td width="33%" valign="top">
-      <h3>🤖 AI Decision Support</h3>
-      <p>输出跟进等级、建议动作、建议时间和参考话术，辅助销售做出下一步决策。</p>
+      <h3>🤖 Agentic Decisioning</h3>
+      <p>综合客户上下文输出机会判断、下一最佳动作、执行计划和参考话术。</p>
     </td>
   </tr>
   <tr>
@@ -101,8 +103,8 @@ Law Calling Assistant 最初用于解决第三方外呼 SaaS **录音保存周�
       <p>将 AI 建议转化为可分配、可延期、可取消、可完成、可审计的业务任务。</p>
     </td>
     <td width="33%" valign="top">
-      <h3>🧑‍💻 Sales Workspace</h3>
-      <p>聚合今日待办、高优客户、即将超时和最近完成，让销售围绕任务而非页面工作。</p>
+      <h3>🧑‍💻 Agent Cockpit</h3>
+      <p>聚合上下文、AI 证据、行动计划、今日待办和执行结果，让销售围绕目标而非页面工作。</p>
     </td>
     <td width="33%" valign="top">
       <h3>📊 Revenue Operations</h3>
@@ -110,6 +112,51 @@ Law Calling Assistant 最初用于解决第三方外呼 SaaS **录音保存周�
     </td>
   </tr>
 </table>
+
+<a id="垂直业务-agent"></a>
+
+## 🤖 Legal Revenue Agent｜法律服务增长智能体
+
+Law Calling Agent 不是在 CRM 页面旁边增加一个聊天框，而是让智能体进入真实销售流程：它能够围绕客户目标主动组织上下文、形成行动计划、选择业务工具，并在权限和人工审批约束下推动任务完成。
+
+> **An agentic revenue operations platform that transforms customer conversations into governed, executable sales actions.**
+
+<table>
+  <tr>
+    <td width="25%" valign="top">
+      <h3>01 · Observe</h3>
+      <p><strong>感知业务现场</strong></p>
+      <p>读取客户档案、历史通话、录音转写、跟进记录和当前任务，形成完整上下文。</p>
+    </td>
+    <td width="25%" valign="top">
+      <h3>02 · Reason</h3>
+      <p><strong>理解与规划</strong></p>
+      <p>判断客户阶段、成交机会、核心异议和风险信号，生成 Next Best Action。</p>
+    </td>
+    <td width="25%" valign="top">
+      <h3>03 · Act</h3>
+      <p><strong>调用企业工具</strong></p>
+      <p>创建或调整任务、生成话术、更新客户状态，并将高风险动作提交人工审批。</p>
+    </td>
+    <td width="25%" valign="top">
+      <h3>04 · Learn</h3>
+      <p><strong>从结果中优化</strong></p>
+      <p>记录建议是否被采纳、任务是否完成及客户是否转化，反哺策略和评估体系。</p>
+    </td>
+  </tr>
+</table>
+
+### Agent 的业务输出
+
+垂直 Agent 的输出不是一段泛化回答，而是一份带依据、风险和执行边界的结构化计划：
+
+```text
+客户上下文 → 商机判断 → 下一最佳动作 → 工具执行计划 → 人工审批 → 结果反馈
+```
+
+典型能力包括：客户全景汇总、跨通话长期记忆、跟进策略规划、销售话术生成、任务编排、质检辅导、经营问答和异常客户发现。当前系统已经提供客户、通话、分析和任务底座；Agent Runtime、长期记忆、工具注册、审批与评估属于下一阶段重点建设能力。
+
+Agent 可使用的能力将按照副作用分级：**Context Tools** 负责读取客户与通话，**Knowledge Tools** 负责检索产品和话术知识，**Action Tools** 负责创建任务与更新状态，**Governance Tools** 负责审批、审计和终止执行。
 
 <a id="核心业务闭环"></a>
 
@@ -119,35 +166,35 @@ Law Calling Assistant 最初用于解决第三方外呼 SaaS **录音保存周�
   <tr align="center">
     <td width="22%"><strong>01 · 数据沉淀</strong><br/><sub>客户、通话与录音</sub></td>
     <td width="4%">→</td>
-    <td width="22%"><strong>02 · 智能理解</strong><br/><sub>内容、意向与机会</sub></td>
+    <td width="22%"><strong>02 · Agent 理解</strong><br/><sub>上下文、意向与机会</sub></td>
     <td width="4%">→</td>
-    <td width="22%"><strong>03 · 行动编排</strong><br/><sub>任务、策略与协同</sub></td>
+    <td width="22%"><strong>03 · Agent 编排</strong><br/><sub>计划、工具与审批</sub></td>
     <td width="4%">→</td>
     <td width="22%"><strong>04 · 经营反馈</strong><br/><sub>跟进、转化与洞察</sub></td>
   </tr>
 </table>
 
-当前 AI 决策采用“分析判断 + 业务规则”两层模型：AI 输出通话有效性、客户意向等级、跟进等级、跟进必要性、建议时间、建议动作和参考话术；Java 后端再根据有效性、等级、时间与去重规则决定是否真正创建业务任务。AI 负责推理，业务后端负责确定性约束、状态流转和数据一致性。
+整个闭环采用“**Agent 认知规划 + 业务确定执行**”双层控制：智能层理解通话、组织客户上下文并提出下一最佳动作；Java 业务内核根据有效性、等级、权限、时间和去重规则决定动作能否执行。Agent 拥有建议权和工具选择权，业务系统始终保留最终写入权。
 
 <a id="系统架构"></a>
 
 ## 🏗️ 系统架构
 
-项目采用前后端分离与 AI 微服务解耦架构，将用户体验、核心业务和智能推理划分为可独立演进的能力层。架构重点不是堆叠组件，而是隔离变化：前端围绕销售工作流演进，业务后端维护规则与数据一致性，AI 服务专注非结构化内容理解，并为通信、模型和企业系统扩展保留边界。
+项目采用前后端分离、智能服务解耦与事件驱动架构，将用户体验、Agent 认知规划和确定性业务执行划分为可独立演进的能力层。架构重点不是堆叠组件，而是隔离变化：前端演进为 Agent Cockpit，Java 后端承担 Action Gateway 与领域内核，Python 服务承载 Agent Runtime 与智能能力。
 
-> **Experience Layer** 负责业务体验，**Domain Layer** 负责确定性规则，**Intelligence Layer** 负责认知与推理，三者通过稳定契约协作。
+> **Experience Layer** 呈现上下文与审批，**Agent Runtime** 负责认知、规划与工具选择，**Action Gateway** 负责权限、事务和状态一致性，**Data & Memory** 沉淀业务事实与长期记忆。
 
 ### 服务职责
 
 | 子项目 | 核心职责 | 主要技术 |
 | --- | --- | --- |
-| `law-calling-admin` | 客户、通话、分析、跟进任务、销售工作台与坐席等运营界面 | Vue 3、TypeScript、Vite、Element Plus、Pinia、Vue Router、Axios、Less |
-| `law-calling-api/LawCallingAI` | 业务规则、数据一致性、接口聚合、Excel 导入导出、录音归档、任务状态机与 AI 调度 | Java 17、Spring Boot、Spring Data JPA、MySQL、Redis、RabbitMQ、EasyExcel、OpenAPI |
-| `law-calling-ai-service/ai_microservice` | 音频预处理、ASR、LLM 分析、结构化输出以及消息队列消费 | Python、FastAPI、Pydantic、aio-pika、HTTPX、pydub |
+| `law-calling-admin` | **Agent Cockpit**：客户上下文、通话洞察、行动计划、任务工作台以及未来的审批与执行轨迹 | Vue 3、TypeScript、Vite、Element Plus、Pinia、Vue Router、Axios、Less |
+| `law-calling-api/LawCallingAI` | **Domain Kernel & Action Gateway**：业务规则、工具执行、权限边界、事务一致性、任务状态机、录音归档与 AI 调度 | Java 17、Spring Boot、Spring Data JPA、MySQL、Redis、RabbitMQ、EasyExcel、OpenAPI |
+| `law-calling-ai-service/ai_microservice` | **Intelligence Service / Agent Runtime**：音频理解、结构化推理，以及后续上下文构建、计划生成、工具选择与评估 | Python、FastAPI、Pydantic、aio-pika、HTTPX、pydub |
 
-## 💡 为什么它不只是一个“AI 套壳”
+## 💡 为什么它是垂直业务 Agent，而不是聊天机器人
 
-真正的难点不在于调用一次模型，而在于让概率性的 AI 输出安全、稳定地进入确定性的业务系统。本项目跨越音频处理、模型推理、消息驱动、事务数据和人工操作五类边界，重点解决以下工程问题：
+通用聊天机器人回答问题，垂直业务 Agent 则需要围绕业务目标持续感知、规划和执行。真正的难点不在于调用一次模型，而在于让概率性的智能决策安全、稳定地进入确定性的业务系统。本项目跨越音频处理、模型推理、消息驱动、事务数据和人工操作五类边界，重点解决以下工程问题：
 
 | 工程问题 | 设计方案 | 架构价值 |
 | --- | --- | --- |
@@ -158,12 +205,24 @@ Law Calling Assistant 最初用于解决第三方外呼 SaaS **录音保存周�
 | 跟进任务与客户历史语义不同 | `AiFollowTask` 与 `CustomerFollowRecord` 分离建模 | 同时支持未来待办状态机和已发生事实时间线 |
 | 音频来源和部署环境不一致 | 支持远程录音 URL、本地路径、转写文本和结构化对话多种输入 | 兼容本地、服务器和历史数据补跑场景 |
 
+### Agent 工程化设计
+
+| Agent 能力 | 设计定位 | 在本项目中的落点 |
+| --- | --- | --- |
+| **Runtime** | 组织目标、上下文、计划和执行步骤 | 基于 Python 智能服务演进，统一承载 Agent Run 与计划生成 |
+| **Memory** | 区分客户事实、交互记忆、知识记忆和策略记忆 | 复用客户、通话、分析和跟进数据，后续增加长期摘要与向量检索 |
+| **Tools** | 将企业能力封装为带 Schema、权限和副作用说明的工具 | 由 Java Action Gateway 暴露客户、任务、话术、提醒和经营查询能力 |
+| **Governance** | 对高风险动作提供审批、幂等、频控、审计和回滚 | 复用业务状态机，并建设 Agent Approval 与 Tool Call Audit |
+| **Evaluation** | 同时评估模型质量、工具成功率和业务结果 | 关注结构有效率、建议采纳率、任务完成率与最终转化反馈 |
+
 ### 关键设计原则
 
 - **Event-driven first**：分析任务和结果通过消息队列解耦，降低服务间时序耦合。
 - **Contract before prompt**：先定义结构化响应契约，再约束 Prompt 与解析逻辑，避免下游依赖自然语言猜测。
 - **AI proposes, business disposes**：AI 提供判断和建议，业务后端掌握最终状态迁移与数据写入权。
 - **Human in the loop**：关键跟进动作保留人工确认、调整、延期和取消能力，避免自动化越权。
+- **Memory with provenance**：客户记忆必须能够追溯到通话、记录或业务事实，不能让模型生成无法验证的“记忆”。
+- **Tools with guardrails**：每个 Agent Tool 都应声明输入契约、权限范围、副作用和审批策略。
 - **Evolutionary architecture**：通信、ASR、LLM、业务规则与前端体验保持清晰边界，为后续供应商替换和 ERP/RAG 扩展预留空间。
 
 <a id="当前能力与完成度"></a>
@@ -184,13 +243,14 @@ Law Calling Assistant 最初用于解决第三方外呼 SaaS **录音保存周�
 | 销售工作台 | ✅ 基础实现 | 聚合待办、高优先级、即将超时和最近完成等工作视图 |
 | 提醒与超时治理 | 🚧 建设中 | 页面提醒、定时扫描、超时状态、任务日志和通知闭环仍需完善 |
 | 管理看板 | 🟡 基础指标 | 外呼、接通、有效通话、AI 分析和客户转化等指标仍在扩充 |
+| Legal Revenue Agent | 🧭 Agent MVP 规划 | 组织客户上下文、生成下一最佳动作、调用跟进工具并通过人工审批形成执行闭环 |
 | 真实外呼平台 | 🧭 规划 / 试验接入 | 面向 SIP/线路、号码、坐席、呼叫策略、实时状态、录音与计费的一体化自有通信能力 |
 | ERP 经营集成 | 🧭 规划中 | 打通组织、人员、客户、合同、订单、回款、结算与成本，形成 Call to Cash 经营链路 |
 | 高级 AI 与 RAG | 🧭 规划中 | 扩展销售质检、情绪分析、风险识别、成交预测、经营问答与受控智能执行 |
 
 ## 🌐 产品蓝图：企业增长智能中枢
 
-当前能力只是起点。Law Calling Assistant 的目标形态，是在统一客户与通话数据之上继续连接通信资源、经营系统和企业智能体，形成覆盖“触达—理解—执行—成交—复盘”的增长基础设施。
+当前能力只是起点。Law Calling Agent 的目标形态，是在统一客户与通话数据之上继续连接通信资源、经营系统和企业智能体，形成覆盖“触达—理解—执行—成交—复盘”的增长基础设施。
 
 <table>
   <tr>
@@ -237,20 +297,22 @@ Law Calling Assistant 最初用于解决第三方外呼 SaaS **录音保存周�
 ## 🧩 技术深度地图
 
 ```text
-┌─────────────────────────────────────────────────────────────┐
-│ Experience   Vue 3 管理端 · 销售工作台 · 运营看板           │
-├─────────────────────────────────────────────────────────────┤
-│ Domain       客户域 · 通话域 · 分析域 · 跟进任务状态机       │
-├─────────────────────────────────────────────────────────────┤
-│ Intelligence ASR · LLM · Prompt · Schema · 规则决策          │
-├─────────────────────────────────────────────────────────────┤
-│ Integration  REST · RabbitMQ · 外呼供应商 · 未来 ERP / RAG   │
-├─────────────────────────────────────────────────────────────┤
-│ Data         MySQL · Redis · 私有录音存储 · 审计与指标        │
-└─────────────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────────┐
+│ Experience   Agent Cockpit · 销售工作台 · 审批中心 · 运营看板   │
+├──────────────────────────────────────────────────────────────────┤
+│ Agent        Context · Planning · Memory · Tools · Evaluation     │
+├──────────────────────────────────────────────────────────────────┤
+│ Domain       客户域 · 通话域 · 分析域 · 跟进任务状态机           │
+├──────────────────────────────────────────────────────────────────┤
+│ Intelligence ASR · LLM · Prompt · Schema · RAG · Guardrails      │
+├──────────────────────────────────────────────────────────────────┤
+│ Integration  REST · RabbitMQ · 外呼供应商 · 未来 ERP / MCP       │
+├──────────────────────────────────────────────────────────────────┤
+│ Data         MySQL · Redis · 私有录音 · 业务事实 · 长期记忆      │
+└──────────────────────────────────────────────────────────────────┘
 ```
 
-项目覆盖的不只是前端页面或单个模型接口，而是一条从外部数据采集、跨语言服务通信、智能推理到核心业务状态迁移的完整链路，适合作为 AI 工程化、Java 业务建模和全栈系统设计的综合实践。
+项目覆盖的不只是前端页面或单个模型接口，而是一条从外部数据采集、跨语言服务通信、智能推理到核心业务状态迁移的完整链路，并进一步面向 Agent Runtime、工具治理、长期记忆和效果评估演进，适合作为 Agent 工程化、Java 领域建模和全栈系统设计的综合实践。
 
 ## 📁 目录结构
 
@@ -271,7 +333,7 @@ law-calling-assistant/
 └── law-calling-ai-service/
     └── ai_microservice/              # FastAPI AI 服务
         ├── app/api/                  # HTTP 分析接口
-        ├── app/services/             # ASR、LLM 与分析编排
+        ├── app/services/             # ASR、LLM、分析与后续 Agent 编排
         ├── app/worker/               # RabbitMQ 消费者
         ├── app/models/               # 请求/响应数据契约
         └── tests/                    # AI 服务测试
@@ -289,6 +351,8 @@ law-calling-assistant/
 - `SysSale`：销售/坐席信息，用于话单归属、权限边界和运营统计。
 
 领域上刻意区分“跟进任务”与“跟进记录”：前者描述未来要做什么，后者记录已经发生了什么。这一分离使任务状态机、审计历史、客户时间线和后续统计能够独立演进。
+
+Agent 化阶段将在现有领域模型之上增加 `AgentRun`、`AgentStep`、`AgentToolCall`、`AgentApproval`、`AgentMemory` 与 `AgentEvaluation` 等运行对象，用于记录计划、工具调用、审批、记忆来源和评估结果。这些对象描述智能体的运行过程，不替代客户、通话和任务等业务事实。
 
 <a id="本地开发"></a>
 
@@ -386,7 +450,7 @@ cd ..\..\law-calling-ai-service\ai_microservice
 python -m unittest discover -s tests -p "test_*.py"
 ```
 
-涉及 AI 结果的测试应区分两类：一类是可重复的结构、规则与状态机测试；另一类是依赖外部 ASR/LLM 的集成评测。生产验收不应只看模型返回成功，还应验证字段完整性、等级一致性、任务去重、失败补偿、客户回写和人工可解释性。
+涉及 AI 与 Agent 的测试应区分三类：可重复的结构、规则与状态机测试；依赖外部 ASR/LLM 的智能质量评测；以及覆盖计划、工具、审批和最终业务结果的 Agent 轨迹评测。生产验收不应只看模型返回成功，还应验证字段完整性、建议依据、工具成功率、越权拦截率、任务去重、失败补偿、人工采纳率和客户回写一致性。
 
 ## 🔐 配置与安全
 
@@ -404,12 +468,14 @@ python -m unittest discover -s tests -p "test_*.py"
 ## 🗺️ 演进路线
 
 1. **完成第二阶段闭环**：稳定 AI 结果落库、任务状态机、客户回写、提醒、超时扫描、任务日志和端到端验收。
-2. **建设真实外呼 V1**：接入线路与号码，完成拨号、状态事件、录音回传、话单入库及现有 AI 链路复用。
-3. **打通 ERP 基础数据**：优先统一组织、人员、部门、合同、订单、回款、结算和财务成本口径。
-4. **扩展高级 AI 能力**：建设销售质检、情绪分析、企业画像、风险识别、客户经营和成交预测。
-5. **建设企业智能层**：在统一权限与可信数据之上，引入 RAG 经营问答、自动简报与经过审批的动作执行。
+2. **交付 Legal Revenue Agent MVP**：完成 Agent Run、上下文构建、结构化计划、跟进工具调用、人工审批和执行轨迹。
+3. **建设 Memory 与 RAG**：沉淀客户长期记忆、产品知识、销售话术、异议案例和可追溯引用。
+4. **建设真实外呼 V1**：接入线路与号码，完成拨号、状态事件、录音回传、话单入库及 Agent 触达工具。
+5. **打通 ERP 经营数据**：统一组织、人员、合同、订单、回款、结算和成本口径，为 Agent 提供可信经营工具。
+6. **扩展专业 Agent 能力**：建设销售教练、通话质检、风险识别、客户经营、成交预测和管理者 Copilot。
+7. **建设受控企业智能层**：通过权限、审批、幂等与审计支持经营问答、自动简报和低风险动作执行。
 
-路线遵循“先形成可运行闭环，再扩展通信与经营底座，最后增加高级智能”的依赖关系，避免在业务数据和状态规则尚未稳定时堆叠展示型 AI 功能。
+路线遵循“先形成确定性业务闭环，再构建可审计 Agent，随后扩展记忆、通信与经营工具”的依赖关系，避免把多个 Prompt 包装成缺少工具、治理和评估的伪多智能体系统。
 
 ## 📚 文档索引
 
@@ -424,6 +490,6 @@ python -m unittest discover -s tests -p "test_*.py"
 
 ## 🌌 项目愿景
 
-Law Calling Assistant 希望建立的不是一个孤立的拨号页面，而是一套连接“客户触达、通话理解、销售执行与经营结果”的业务基础设施：
+Law Calling Agent 希望建立的不是一个孤立的拨号页面，也不是一个只能回答问题的聊天机器人，而是一套连接“客户触达、通话理解、智能决策、工具执行与经营结果”的垂直业务 Agent 基础设施：
 
-> 让每一次通话都能被安全沉淀，让每一个 AI 结论都能进入可控流程，让每一个销售动作最终都能被经营数据验证。
+> 让 Agent 听懂每一次通话、记住每一段客户关系、解释每一个行动建议，并在企业规则约束下推动下一最佳动作。

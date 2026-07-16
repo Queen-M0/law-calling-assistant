@@ -59,9 +59,9 @@
     <rect x="304" y="112" width="618" height="132" rx="28" fill="#284884"/>
   </g>
 
-  <text x="330" y="143" fill="#7DEBFF" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="18" font-weight="700" letter-spacing="5">AI-NATIVE SALES INFRASTRUCTURE</text>
-  <text x="326" y="207" fill="white" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="56" font-weight="800" letter-spacing="1">LAW CALLING</text>
-  <text x="330" y="249" fill="#BFD3F9" font-family="Microsoft YaHei, PingFang SC, Segoe UI, sans-serif" font-size="24" font-weight="500">智能外呼 · 通话理解 · 销售执行 · 经营闭环</text>
+  <text x="330" y="143" fill="#7DEBFF" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="18" font-weight="700" letter-spacing="5">AGENTIC REVENUE OPERATIONS</text>
+  <text x="326" y="207" fill="white" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="51" font-weight="800" letter-spacing="1">LAW CALLING AGENT</text>
+  <text x="330" y="249" fill="#BFD3F9" font-family="Microsoft YaHei, PingFang SC, Segoe UI, sans-serif" font-size="24" font-weight="500">垂直智能体 · 通话理解 · 工具执行 · 经营闭环</text>
 
   <g transform="translate(330 286)">
     <rect width="156" height="42" rx="21" fill="#0BE0ED" fill-opacity="0.12" stroke="#56E8F3" stroke-opacity="0.55"/>

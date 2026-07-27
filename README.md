@@ -58,9 +58,21 @@
       <img src="./docs/assets/screenshots/workbench-redacted.png" width="100%" alt="销售工作台" />
     </td>
     <td width="50%" align="center">
-      <strong>通话分析</strong><br/>
-      <sub>ASR 转写、AI 对话、意向等级与录音播放</sub><br/><br/>
-      <img src="./docs/assets/screenshots/call-analysis-redacted.png" width="100%" alt="通话分析" />
+      <strong>通话记录</strong><br/>
+      <sub>话单列表、录音播放、通话状态与筛选</sub><br/><br/>
+      <img src="./docs/assets/screenshots/call-record-list-redacted.png" width="100%" alt="通话记录" />
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" align="center">
+      <strong>ASR 转写与 AI 对话</strong><br/>
+      <sub>语音转文字、角色分离、意向等级与 AI 评价</sub><br/><br/>
+      <img src="./docs/assets/screenshots/call-transcript-redacted.png" width="100%" alt="ASR 转写与 AI 对话" />
+    </td>
+    <td width="50%" align="center">
+      <strong>通话对话详情</strong><br/>
+      <sub>完整对话流、销售与客户角色气泡</sub><br/><br/>
+      <img src="./docs/assets/screenshots/call-detail-redacted.png" width="100%" alt="通话对话详情" />
     </td>
   </tr>
   <tr>

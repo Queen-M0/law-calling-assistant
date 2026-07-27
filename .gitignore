@@ -1,0 +1,9 @@
+# Source code (private)
+/law-calling-admin/
+/law-calling-ai-service/
+/law-calling-api/
+
+# Internal docs
+/docs/job-audit/
+/docs/job-audit.zip
+/docs/project-summary/

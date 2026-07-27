@@ -64,15 +64,10 @@
     </td>
   </tr>
   <tr>
-    <td width="50%" align="center">
-      <strong>ASR 转写与 AI 对话</strong><br/>
-      <sub>语音转文字、角色分离、意向等级与 AI 评价</sub><br/><br/>
-      <img src="./docs/assets/screenshots/call-transcript-redacted.png" width="100%" alt="ASR 转写与 AI 对话" />
-    </td>
-    <td width="50%" align="center">
-      <strong>通话对话详情</strong><br/>
-      <sub>完整对话流、销售与客户角色气泡</sub><br/><br/>
-      <img src="./docs/assets/screenshots/call-detail-redacted.png" width="100%" alt="通话对话详情" />
+    <td colspan="2" align="center">
+      <strong>通话分析详情</strong><br/>
+      <sub>ASR 语音转写 · 角色分离对话 · 意向等级判定 · AI 评价摘要 · 录音在线播放</sub><br/><br/>
+      <img src="./docs/assets/screenshots/call-detail-cropped.png" width="80%" alt="通话分析详情" />
     </td>
   </tr>
   <tr>

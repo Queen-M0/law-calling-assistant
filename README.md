@@ -35,6 +35,7 @@
   <a href="#真实系统界面">系统截图</a> ·
   <a href="#项目定位">项目定位</a> ·
   <a href="#垂直业务-agent">垂直 Agent</a> ·
+  <a href="#mcp-agent-工具总线-mvp">MCP Agent</a> ·
   <a href="#核心业务闭环">业务闭环</a> ·
   <a href="#系统架构">系统架构</a> ·
   <a href="#当前能力与完成度">能力矩阵</a> ·
@@ -133,11 +134,11 @@ Law Calling Agent（仓库工程名 `law-calling-assistant`）最初用于解决
 
 ## 🎯 项目定位
 
-当前项目已经完成 **销售跟进 Agent MVP** 的核心业务闭环，并正在向 **法律服务销售垂直 Agent** 演进。
+当前项目已经完成 **销售跟进 Agent MVP** 与 **MCP Agent 工具总线 MVP**，并正在向 **法律服务销售垂直 Agent** 演进。
 
-**当前已实现**：模型输出结构化跟进建议，Java 业务规则根据建议触发任务生成和客户状态更新。
+**当前已实现**：在原有 ASR/LLM 固定分析链路之外，新增独立 Agent Runtime。Python 负责模型推理与多轮工具编排，通过 Streamable HTTP 调用 Java MCP Server；Java 继续掌握客户权限、审批状态、业务事务和最终写入权。
 
-**下一阶段**：动态计划生成、工具注册与选择、Agent Runtime、长期记忆和评测体系。
+**下一阶段**：长期记忆、企业 RAG、Agent Eval，以及从本地 MVP 向多实例和生产级认证演进。
 
 平台面向三个核心角色：
 
@@ -170,15 +171,16 @@ Law Calling Agent（仓库工程名 `law-calling-assistant`）最初用于解决
 - 客户状态自动回写（意向等级、生命周期阶段、下次跟进时间）
 - 客户跟进记录自动生成
 - Vue 3 + Spring Boot + FastAPI 三端协作
+- 7 个 MCP Tools（5 个只读工具 + 任务草案 + 审批后创建）
+- Python 多轮 Agent Runtime、Mock LLM 本地演示与完整调用轨迹
+- Human Approval、销售数据隔离、悲观锁与幂等执行
 
 ### NEXT｜下一阶段工程增强
 
 - RabbitMQ 死信队列（DLQ）、延迟重试、消息 Inbox/Outbox
 - 消费幂等、统一状态机、自动补偿
-- 统一客户上下文聚合接口（Customer Context Builder）
-- Agent Tool 封装（带 Schema、权限和副作用说明）
-- AgentRun / Step / ToolCall 运行轨迹
-- Human Approval 审批中心
+- Agent 长期记忆与多实例轨迹存储
+- 生产级 OAuth/OIDC、服务身份与细粒度权限策略
 - Agent Eval 评估体系
 - 企业 RAG（产品知识、销售话术、异议案例）
 
@@ -230,7 +232,7 @@ Law Calling Agent（仓库工程名 `law-calling-assistant`）最初用于解决
 
 ## 🤖 销售跟进 Agent MVP
 
-Law Calling Agent 不是在 CRM 页面旁边增加一个聊天框，而是让智能体进入真实销售流程：当前版本由模型输出结构化跟进建议，Java 业务规则根据建议触发任务生成和客户状态更新；动态计划和工具选择属于下一阶段 Agent Runtime。
+Law Calling Agent 不是在 CRM 页面旁边增加一个聊天框，而是让智能体进入真实销售流程：当前版本既保留原有 ASR/LLM 结构化分析链路，也提供独立的多轮 Agent Runtime。模型可以按需读取客户、通话、分析与任务上下文，但正式业务写入仍由 Java 领域服务在权限、审批和事务约束下执行。
 
 > **An agentic revenue operations platform that transforms customer conversations into governed, executable sales actions.**
 
@@ -259,17 +261,52 @@ Law Calling Agent 不是在 CRM 页面旁边增加一个聊天框，而是让智
   </tr>
 </table>
 
+## 🔌 MCP Agent 工具总线 MVP
+
+MCP MVP 将现有业务能力标准化为模型可发现、可调用、可审计的 Tools，同时保持原有 ASR、固定 JSON 分析和 RabbitMQ 链路不变：
+
+```text
+Vue Agent 工作台
+  → Python Agent Runtime / DeepSeek Function Calling
+  → Python MCP Client
+  → Streamable HTTP
+  → Java MCP Server
+  → 现有 Customer / Call / Analysis / FollowTask Service
+```
+
+| MCP Tool | 类型 | 作用与边界 |
+| --- | --- | --- |
+| `get_customer_context` | 只读 | 读取客户上下文，校验销售归属并脱敏手机号 |
+| `list_customer_calls` | 只读 | 限量读取历史通话，不返回录音地址和完整转写 |
+| `get_call_analysis` | 只读 | 读取最新分析，转写片段限制长度 |
+| `list_follow_tasks` | 只读 | 按客户、状态和数量上限查询任务 |
+| `get_follow_task_detail` | 只读 | 读取任务详情并清理关联敏感字段 |
+| `draft_follow_task` | 受控草案 | 检查客户、来源通话和已有待办，只生成待审批草案 |
+| `create_follow_task` | 受控写入 | 仅允许批准后执行，由 Java 完成最终校验、事务和幂等控制 |
+
+核心治理机制：
+
+- **权限不交给模型**：每次 Tool 调用都校验内部服务身份、`saleId` 和客户数据归属。
+- **写操作不暴露给模型**：DeepSeek 只能看到只读工具和草案工具；`create_follow_task` 仅由审批服务触发。
+- **审批状态双重校验**：Java 保存正式审批事实，未批准、已拒绝或已执行的草案不能越权建单。
+- **三层幂等保护**：幂等键唯一记录、审批记录悲观锁、审批与任务一对一关联共同防止重复创建。
+- **可审计且脱敏**：Python SQLite 保存 AgentRun、Step、ToolCall、Approval；轨迹不记录完整手机号、通话全文、Token 或认证 Header。
+
+本地自动验证已覆盖 7 个工具发现、真实 MCP 调用、销售越权拒绝、字段脱敏、未审批/拒绝拦截、批准建单、幂等重放和轨迹持久化。Java 测试共运行 18 项（0 failures、0 errors、1 skipped），Python 10 项测试通过，Vue 生产构建通过。**DeepSeek 多轮 Tool Calling 代码已实现，但当前自动验收采用 Mock LLM，尚未把真实 DeepSeek 在线调用计入通过结果。**
+
+完整协议流程、本地启动、代码映射和面试知识点见 [MCP Agent MVP 实现与知识手册](./docs/mcp-agent-mvp.md)。
+
 ### Agent 的业务输出
 
 垂直 Agent 的输出不是一段泛化回答，而是一份带依据、风险和执行边界的结构化计划：
 
 ```text
-客户上下文 → ASR 转写 → LLM 结构化分析 → Next Best Action → Java 规则引擎 → 任务生成 → 人工处理 → 客户回写
+用户目标 → Agent 多轮推理 → MCP 上下文工具 → Next Best Action → 任务草案 → 人工审批 → Java 幂等建单
 ```
 
-**当前模型拥有建议输出能力，Java 业务系统保留任务生成、状态迁移和最终写入权；动态工具选择属于 Roadmap。**
+**模型拥有工具选择和建议输出能力，Java 业务系统始终保留权限判断、审批状态、事务校验和最终写入权。**
 
-Agent 可使用的能力将按照副作用分级：**Context Tools** 负责读取客户与通话，**Knowledge Tools** 负责检索产品和话术知识，**Action Tools** 负责创建任务与更新状态，**Governance Tools** 负责审批、审计和终止执行。当前这些能力以 REST API 形式存在，下一阶段将封装为 Agent Tool。
+Agent 能力按照副作用分级：**Context Tools** 负责读取客户、通话和任务，**Action Tools** 当前只开放任务草案与审批后建单，**Governance** 负责审批、审计、权限和幂等。Knowledge Tools、真实外呼和客户阶段更新仍属于 Roadmap。
 
 <a id="核心业务闭环"></a>
 
@@ -301,9 +338,9 @@ Agent 可使用的能力将按照副作用分级：**Context Tools** 负责读�
 
 | 子项目 | 核心职责 | 主要技术 |
 | --- | --- | --- |
-| `law-calling-admin` | **Agent Cockpit**：客户上下文、通话洞察、行动计划、任务工作台以及未来的审批与执行轨迹 | Vue 3、TypeScript、Vite、Element Plus、Vue Router、Axios、Less |
-| `law-calling-api/LawCallingAI` | **Domain Kernel & Action Gateway**：业务规则、任务状态机、录音归档、AI 调度、客户状态回写 | Java 17、Spring Boot、Spring Data JPA、MySQL、Redis、RabbitMQ、EasyExcel |
-| `law-calling-ai-service/ai_microservice` | **Intelligence Service**：音频处理、ASR 转写、LLM 结构化分析，并作为后续 Agent Runtime 的演进基础 | Python、FastAPI、Pydantic、aio-pika、HTTPX、pydub |
+| `law-calling-admin` | **Agent Cockpit**：客户上下文、通话洞察、任务工作台、Agent Run 轨迹与人工审批 | Vue 3、TypeScript、Vite、Element Plus、Vue Router、Axios、Less |
+| `law-calling-api/LawCallingAI` | **Domain Kernel & MCP Server**：通过 MCP Tools 复用领域 Service，执行权限、审批、幂等、事务和最终业务写入 | Java 17、Spring Boot、MCP Java SDK、Spring Data JPA、MySQL、Redis、RabbitMQ |
+| `law-calling-ai-service/ai_microservice` | **Intelligence Service & MCP Host**：保留 ASR/LLM 固定分析，并以独立 `app/agent/` 承载 DeepSeek、MCP Client、多轮 Runtime、Tool Policy 和运行轨迹 | Python、FastAPI、MCP Python SDK、Pydantic、HTTPX、SQLite、aio-pika |
 
 ## 💡 为什么它是 Agent 化销售工作流，而不是聊天机器人
 
@@ -322,11 +359,11 @@ Agent 可使用的能力将按照副作用分级：**Context Tools** 负责读�
 
 | Agent 能力 | 当前状态 | 设计定位 |
 | --- | --- | --- |
-| **Context** | ✅ 数据已存在，分散在各 Service | 🧭 NEXT：统一客户上下文聚合接口 |
-| **Planning** | ✅ 由 LLM 一次性输出结构化 NBA | 🧭 NEXT：动态多步计划生成 |
+| **Context** | ✅ 5 个只读 MCP Tools | 客户、通话、分析和任务按销售权限读取 |
+| **Planning** | ✅ 多轮 Agent Runtime MVP | MCP Schema 转 Function Tools，最多 6 步推理与工具调用 |
 | **Memory** | ✅ 客户、通话、分析和跟进数据沉淀在数据库 | 🧭 NEXT：长期摘要、向量检索和跨会话记忆 |
-| **Tools** | ✅ 11 个 Controller / 33+ 个 REST API 已具备 | 🧭 NEXT：封装为 Agent Tool（带 Schema、权限和副作用说明） |
-| **Governance** | ✅ Human-in-the-Loop 任务生命周期 | 🧭 NEXT：Agent Approval 与 Tool Call Audit |
+| **Tools** | ✅ 7 个 MCP Tools | 5 个只读 + 1 个草案 + 1 个审批后写入 |
+| **Governance** | ✅ MVP 已实现 | Human Approval、销售隔离、脱敏、调用审计和幂等执行 |
 | **Evaluation** | ❌ 尚未实现 | 🧭 NEXT：结构有效率、建议采纳率、任务完成率与转化反馈 |
 
 ### 关键设计原则
@@ -361,7 +398,7 @@ Agent 可使用的能力将按照副作用分级：**Context Tools** 负责读�
 | 管理看板 | 🟡 基础实现 | 外呼、接通、有效通话、AI 分析和客户转化等指标仍在扩充 |
 | AI 跟进分析 V2 | 🟡 持续调优 | 输出意向等级、跟进等级、建议动作、下次跟进时间、生命周期和参考话术 |
 | 自有外呼通信平台 | 🌌 VISION | 面向 SIP/线路、号码、坐席、呼叫策略、实时状态、录音与计费的一体化自有通信能力 |
-| Agent Runtime | 🧭 NEXT | AgentRun / Step / ToolCall、动态计划、工具选择与执行轨迹 |
+| MCP Agent Runtime | ✅ MVP 已实现 | 7 个 Tools、多轮调用、人工审批、幂等写入、运行轨迹和 Mock LLM 演示 |
 | 长期 Memory | 🧭 NEXT | 客户长期摘要、向量检索、跨会话记忆 |
 | RAG | 🧭 NEXT | 产品知识库、销售话术、异议案例和可追溯引用 |
 | Agent Eval | 🧭 NEXT | 结构有效率、建议采纳率、任务完成率与最终转化反馈 |
@@ -419,21 +456,21 @@ Agent 可使用的能力将按照副作用分级：**Context Tools** 负责读�
 ┌──────────────────────────────────────────────────────────────────┐
 │ Experience   Agent Cockpit · 销售工作台 · 审批中心 · 运营看板   │
 ├──────────────────────────────────────────────────────────────────┤
-│ Agent        Context · Planning · Memory · Tools · Evaluation     │
-│              (CURRENT: 数据底座 + 结构化NBA) (NEXT: Runtime层)   │
+│ Agent        Runtime · MCP Tools · Approval · Trace · Evaluation  │
+│              (CURRENT: MCP MVP) (NEXT: Memory · RAG · Eval)       │
 ├──────────────────────────────────────────────────────────────────┤
 │ Domain       客户域 · 通话域 · 分析域 · 跟进任务状态机           │
 ├──────────────────────────────────────────────────────────────────┤
 │ Intelligence ASR · LLM · Prompt · Schema · Guardrails             │
 │              (NEXT: RAG · Memory · Eval)                          │
 ├──────────────────────────────────────────────────────────────────┤
-│ Integration  REST · RabbitMQ · 外呼供应商 · 未来 ERP / MCP       │
+│ Integration  REST · RabbitMQ · MCP Streamable HTTP · 未来 ERP    │
 ├──────────────────────────────────────────────────────────────────┤
 │ Data         MySQL · Redis · 私有录音 · 业务事实 · 长期记忆      │
 └──────────────────────────────────────────────────────────────────┘
 ```
 
-项目覆盖的不只是前端页面或单个模型接口，而是一条从外部数据采集、跨语言服务通信、智能推理到核心业务状态迁移的完整链路，并进一步面向 Agent Runtime、工具治理、长期记忆和效果评估演进。
+项目覆盖的不只是前端页面或单个模型接口，而是一条从外部数据采集、跨语言服务通信、智能推理到核心业务状态迁移的完整链路；当前已通过 MCP 建立受控工具总线，后续继续面向长期记忆、RAG 和效果评估演进。
 
 ## 📁 目录结构
 
@@ -443,18 +480,20 @@ law-calling-assistant/
 ├── docs/
 │   ├── assets/                       # Hero 图片与系统截图
 │   ├── showcase/                     # 公开展示文档
-│   └── project-summary/              # 项目审计与分析（内部）
+│   ├── project-summary/              # 项目审计与分析（内部）
+│   └── mcp-agent-mvp.md              # MCP 实现、演示与面试知识手册
 ├── law-calling-admin/                # Vue 3 管理端
 │   ├── src/api/                      # 前端接口封装
 │   ├── src/router/                   # 路由与访问入口
-│   └── src/views/                    # 工作台、任务、客户、通话、分析、坐席等页面
+│   └── src/views/agent/              # 最小 Agent 工作台与人工审批
 ├── law-calling-api/
 │   └── LawCallingAI/                 # Spring Boot 业务后端
-│       ├── src/main/java/            # Controller、Service、Repository、任务与 MQ 模块
+│       ├── src/main/java/.../mcp/    # MCP Server、Tools、认证、审批与幂等
 │       └── src/main/resources/       # 分环境配置
 └── law-calling-ai-service/
     └── ai_microservice/              # FastAPI AI 服务
-        ├── app/services/             # ASR、LLM 与分析服务
+        ├── app/agent/                # MCP Client、Agent Runtime、Policy 与轨迹
+        ├── app/services/             # 原有 ASR、LLM 与分析服务
         ├── app/worker/               # RabbitMQ 消费者
         └── app/models/               # 请求/响应数据契约
 ```
@@ -472,7 +511,7 @@ law-calling-assistant/
 
 领域上刻意区分"跟进任务"与"跟进记录"：前者描述未来要做什么，后者记录已经发生了什么。
 
-Agent 化阶段将在现有领域模型之上增加 `AgentRun`、`AgentStep`、`AgentToolCall`、`AgentApproval`、`AgentMemory` 与 `AgentEvaluation` 等运行对象，用于记录计划、工具调用、审批、记忆来源和评估结果。
+Agent 化阶段已在 Python 持久化层增加 `AgentRun`、`AgentStep`、`AgentToolCall` 与 `AgentApproval`，用于记录运行、工具调用和审批轨迹；Java 另外保存 MCP 审批与幂等事实。`AgentMemory` 与 `AgentEvaluation` 仍属于后续演进对象。
 
 ## 🔧 工程可靠性和已知边界
 
@@ -484,6 +523,7 @@ Agent 化阶段将在现有领域模型之上增加 `AgentRun`、`AgentStep`、`
 | 错误处理 | AI 分析有重试计数和 FAILED 标记 | 缺少定时补偿扫描和手动重试入口 |
 | 认证 | 本地 JWT 认证（admin 账号） | 原项目使用外部小程序后端认证，当前已替换为本地方案 |
 | 前端操作 | 工作台 start/complete 已接通后端 API | 跟进任务页面弹窗操作部分仍为本地 mock |
+| MCP 治理 | 内部 Token + saleId 归属校验 + Java 审批事实 + 幂等记录 | 当前为内网、本地 MVP，尚未替代生产级 OAuth/OIDC |
 
 ## 🔐 隐私与源码说明
 
@@ -496,7 +536,7 @@ Agent 化阶段将在现有领域模型之上增加 `AgentRun`、`AgentStep`、`
 ## 🗺️ 演进路线
 
 1. **~~完成核心业务闭环~~** ✅ AI 结果落库、任务状态机、客户回写、工作台已端到端打通。
-2. **交付 Agent Runtime MVP**：完成 AgentRun、上下文构建、结构化计划、跟进工具调用、人工审批和执行轨迹。
+2. **~~交付 MCP Agent Runtime MVP~~** ✅ 7 个 MCP Tools、多轮工具调用、人工审批、幂等执行、运行轨迹和最小 Agent 工作台已打通。
 3. **建设 Memory 与 RAG**：沉淀客户长期记忆、产品知识、销售话术、异议案例和可追溯引用。
 4. **建设真实外呼 V1**：接入线路与号码，完成拨号、状态事件、录音回传、话单入库及 Agent 触达工具。
 5. **打通 ERP 经营数据**：统一组织、人员、合同、订单、回款、结算和成本口径，为 Agent 提供可信经营工具。
@@ -506,6 +546,7 @@ Agent 化阶段将在现有领域模型之上增加 `AgentRun`、`AgentStep`、`
 
 ## 📚 文档索引
 
+- [MCP Agent MVP 实现与知识手册](./docs/mcp-agent-mvp.md) — 真实代码结构、协议流程、工具、审批幂等、本地演示与面试知识点
 - [展示文档](./docs/showcase/) — 架构说明、业务流程与能力边界
 - [整体开发功能规划](./law-calling-admin/整体开发功能.md)
 - [第二阶段实施方案](./law-calling-admin/dev-docs/phase-2-implementation-plan.md)
